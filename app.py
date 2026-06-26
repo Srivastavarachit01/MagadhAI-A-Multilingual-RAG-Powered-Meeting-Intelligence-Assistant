@@ -651,7 +651,7 @@ if st.session_state.pipeline_stage == "running":
         from core.summarizer      import summarize, generate_title
         from core.extractor       import (extract_action_items,
                                           extract_key_decisions, extract_questions)
-        from core.rag_engine      import build_rag_chain
+        from core.rag_engine import build_rag_chain
 
         spin = st.empty()
 
