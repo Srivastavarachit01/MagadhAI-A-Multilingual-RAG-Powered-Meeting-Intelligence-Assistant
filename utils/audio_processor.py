@@ -1,5 +1,7 @@
 import yt_dlp
 from pydub import AudioSegment
+from youtube_transcript_api import YouTubeTranscriptApi
+import re
 import os
 
 DOWNLOAD_DIR = "downloads"
@@ -49,12 +51,18 @@ def chunk_audio(wav_path: str, chunk_minutes: int = 10) -> list:
 
 def process_input(source: str) -> list:
     if source.startswith("http://") or source.startswith("https://"):
-        wav_path = download_audio_from_youtube(source)
+        try:
+            video_id = re.search(r"(?:v=|youtu\.be/)([^&\s]+)", source)
+            vid_id = video_id.group(1)
+            transcript_data = YouTubeTranscriptApi.get_transcript(vid_id)
+            return [" ".join([t["text"] for t in transcript_data])]
+        except:
+            wav_path = download_audio_from_youtube(source)
+            return chunk_audio(wav_path)
     else:
         wav_path = convert_to_wav(source)
-    
-    chunks = chunk_audio(wav_path)
-    return chunks
+        chunks = chunk_audio(wav_path)
+        return chunks
 
 if __name__ == "__main__":
     result = process_input("https://youtu.be/Cn-o7RzUPpU?si=p9KIn85LEhJxUdtI")

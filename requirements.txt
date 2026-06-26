@@ -45,3 +45,4 @@ requests>=2.32.0
 yt-dlp
 langchain-chroma
 yt-dlp>=2024.4.9
+youtube-transcript-api
