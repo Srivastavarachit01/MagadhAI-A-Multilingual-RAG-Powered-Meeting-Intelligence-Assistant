@@ -52,3 +52,4 @@ tiktoken>=0.7.0            # token counting (optional but useful with LangChain)
 # ── PyTorch (CPU build — swap for cu121 if you have a GPU) ──
 # torch>=2.3.0              # already pulled by openai-whisper; pin version if needed
 # torchvision>=0.18.0python-dotenv
+python-dotenv
