@@ -7,7 +7,7 @@ os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
 def download_audio_from_youtube(url: str) -> str:
     ydl_opts = {
-       "format": "bestaudio[ext=m4a]/bestaudio/best",
+        "format": "bestaudio/best",
         "outtmpl": os.path.join(DOWNLOAD_DIR, "%(title)s.%(ext)s"),
         "postprocessors": [{
             "key": "FFmpegExtractAudio",
