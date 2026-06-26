@@ -11,7 +11,6 @@ try:
 except ImportError:
     pass
 
-load_dotenv()
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Page config — must be first Streamlit call
