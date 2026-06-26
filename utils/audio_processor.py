@@ -1,0 +1,59 @@
+import yt_dlp
+from pydub import AudioSegment
+import os
+
+DOWNLOAD_DIR = "downloads"
+os.makedirs(DOWNLOAD_DIR, exist_ok=True)
+
+def download_audio_from_youtube(url: str) -> str:
+    ydl_opts = {
+        "format": "bestaudio/best",
+        "outtmpl": os.path.join(DOWNLOAD_DIR, "%(title)s.%(ext)s"),
+        "postprocessors": [{
+            "key": "FFmpegExtractAudio",
+            "preferredcodec": "wav",
+            "preferredquality": "192",
+        }],
+        "quiet": True,
+        "extractor_args": {
+            "youtube": {
+                "player_client": ["ios", "android", "web"],
+            }
+        },
+    }
+    with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+        info = ydl.extract_info(url, download=True)
+        filename = ydl.prepare_filename(info)
+        base = os.path.splitext(filename)[0]
+        return base + ".wav"
+
+def convert_to_wav(input_path: str) -> str:
+    output_path = os.path.splitext(input_path)[0] + ".wav"
+    audio = AudioSegment.from_file(input_path)
+    audio = audio.set_channels(1).set_frame_rate(16000)
+    audio.export(output_path, format="wav")
+    return output_path
+
+def chunk_audio(wav_path: str, chunk_minutes: int = 10) -> list:
+    audio = AudioSegment.from_wav(wav_path)
+    chunk_length_ms = chunk_minutes * 60 * 1000
+    base = os.path.splitext(wav_path)[0]
+    chunks = []
+    for i, start in enumerate(range(0, len(audio), chunk_length_ms)):
+        chunk = audio[start: start + chunk_length_ms]
+        chunk_path = f"{base}_chunk_{i}.wav"
+        chunk.export(chunk_path, format="wav")
+        chunks.append(chunk_path)
+    return chunks
+
+def process_input(source: str) -> list:
+    if source.startswith("http://") or source.startswith("https://"):
+        wav_path = download_audio_from_youtube(source)
+    else:
+        wav_path = convert_to_wav(source)
+    
+    chunks = chunk_audio(wav_path)
+    return chunks
+
+if __name__ == "__main__":
+    result = process_input("https://youtu.be/Cn-o7RzUPpU?si=p9KIn85LEhJxUdtI")

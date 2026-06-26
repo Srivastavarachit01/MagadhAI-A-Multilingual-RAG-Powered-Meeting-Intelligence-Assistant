@@ -1,0 +1,54 @@
+# ============================================================
+# AI Meeting Assistant — requirements.txt
+# Python >= 3.10 recommended
+# ============================================================
+
+# ── UI ──────────────────────────────────────────────────────
+streamlit>=1.35.0
+
+# ── Audio / Video download ───────────────────────────────────
+yt-dlp>=2024.5.27          # download audio from URLs (YouTube, Drive, etc.)
+pydub>=0.25.1              # audio chunking / format conversion
+ffmpeg-python>=0.2.0       # ffmpeg Python bindings (ffmpeg binary must be on PATH)
+
+# ── Speech-to-Text (local Whisper) ──────────────────────────
+openai-whisper>=20231117   # local Whisper model (pulls torch automatically)
+
+# ── Translation (Hindi → English) ───────────────────────────
+deep-translator>=1.11.4    # lightweight Google Translate wrapper (no API key)
+# OR use Helsinki-NLP via transformers (uncomment if preferred):
+# transformers>=4.41.0
+# sentencepiece>=0.2.0
+
+# ── LLM / LangChain LCEL + Mistral free API ─────────────────
+langchain>=0.2.6
+langchain-core>=0.2.10
+langchain-community>=0.2.6
+langchain-mistralai>=0.1.8  # MistralAI chat model integration
+mistralai>=0.4.2            # official Mistral Python client
+
+# ── RAG — Embeddings + Vector Store ─────────────────────────
+chromadb>=0.5.0
+sentence-transformers>=3.0.1   # HuggingFace embeddings (all-MiniLM-L6-v2 etc.)
+langchain-huggingface>=0.0.3   # HuggingFaceEmbeddings wrapper for LangChain
+
+# ── Document loaders / text splitting ───────────────────────
+langchain-text-splitters>=0.2.2
+unstructured>=0.14.6       # parse uploaded docs (txt, docx, pdf, etc.)
+python-docx>=1.1.2         # .docx support
+pypdf>=4.2.0               # .pdf text extraction for uploads
+
+# ── Export — PDF & TXT ──────────────────────────────────────
+fpdf2>=2.7.9               # generate PDF export
+# (TXT export handled natively in Python — no extra package needed)
+
+# ── Utilities ───────────────────────────────────────────────
+python-dotenv>=1.0.1       # load MISTRAL_API_KEY from .env
+requests>=2.32.0           # HTTP calls
+numpy>=1.26.0
+tqdm>=4.66.0               # progress bars
+tiktoken>=0.7.0            # token counting (optional but useful with LangChain)
+
+# ── PyTorch (CPU build — swap for cu121 if you have a GPU) ──
+# torch>=2.3.0              # already pulled by openai-whisper; pin version if needed
+# torchvision>=0.18.0
