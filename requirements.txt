@@ -44,6 +44,4 @@ tqdm>=4.66.0                      # Progress bars
 requests>=2.32.0
 yt-dlp
 langchain-chroma
-audioop-lts
-langchain-chroma
 yt-dlp>=2024.4.9
