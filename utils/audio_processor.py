@@ -20,6 +20,7 @@ def download_audio_from_youtube(url: str) -> str:
                 "player_client": ["ios", "android", "web"],
             }
         },
+        "cookiefile": os.path.join(os.path.dirname(__file__), "..", "cookies.txt"),
     }
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)
